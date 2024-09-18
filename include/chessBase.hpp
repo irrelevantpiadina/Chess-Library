@@ -1,12 +1,5 @@
 #pragma once
 
-/* TODO:
-        castlong,
-        show selected piece on board,
-        promotion,
-        add arrows
-        maybe do some refactoring,
-*/
 #include <functional>
 #include <map>
 #include <memory>
@@ -91,6 +84,9 @@ inline constexpr SDL_Color defaultDarkBrown = {184, 135, 98, 255};
 inline constexpr SDL_Color defaultLightBlue = {100, 100, 255, 255};
 inline constexpr SDL_Color defaultDarkBlue = {10, 10, 100, 255};
 
+/**
+ * used to render things from `Game::run()` without causing flickers
+ */
 void renderDrawQueue(SDL_Renderer *ren, SDL_Color color);
 void createSpriteSheet(std::string path, int width, int height, int horizontalFrames,
                        int verticalFrames, SDL_Renderer *ren);
