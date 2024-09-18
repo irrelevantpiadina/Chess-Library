@@ -1,0 +1,33 @@
+cmake_minimum_required(VERSION 3.13)
+
+project(chess)
+
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+
+
+add_executable(chess "${SOURCES};${CMAKE_CURRENT_SOURCE_DIR}/example/main.cpp")
+
+
+target_compile_definitions(chess PUBLIC SDL_MAIN_HANDLED)
+
+
+target_include_directories(chess 
+	PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/"
+	PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/SDL2/include/"
+	PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/SDL2 image/include/"
+	PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/SDL2 ttf/include/"
+)
+
+set(SDL2_LIBS "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/SDL2/lib/SDL2.lib;${CMAKE_CURRENT_SOURCE_DIR}/dependencies/SDL2/lib/SDL2main.lib")
+set(SDL2_IMAGE_LIBS "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/SDL2 image/lib/SDL2_image.lib")
+set(SDL2_TTF_LIBS "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/SDL2 ttf/lib/SDL2_ttf.lib")
+
+if(WIN32 AND NOT MSVC)
+	target_link_libraries(chess PUBLIC ${SDL2_LIBS} ${SDL2_IMAGE_LIBS} ${SDL2_TTF_LIBS} mingw32)
+else()
+	target_link_libraries(chess PUBLIC ${SDL2_LIBS} ${SDL2_IMAGE_LIBS} ${SDL2_TTF_LIBS})
+endif()
