@@ -114,8 +114,7 @@ void Board::drawSquareOutline(BoardSquare square, SDL_Color color) {
 
 void Board::renderPieces() {
     for (auto &[pos, piece] : pieceMap) {
-        if (piece != nullptr &&
-            spriteMap.find({piece->notation, piece->color}) != spriteMap.end()) {
+        if (piece != nullptr && spriteMap.contains({piece->notation, piece->color})) {
             PieceSprite sprite = spriteMap.at({piece->notation, piece->color});
             auto &[xOffset, yOffset] = offset;
             std::pair<int, int> pair = chessPosToPair(pos);
@@ -157,7 +156,7 @@ bool Board::makeMove(Move move) {
     if (move.startPiece == pieceMap.at(move.start).get() &&
         (move.endPiece == pieceMap.at(move.end).get() || move.type == MoveType::enPassant) &&
         move.startPiece != nullptr && move.startPiece != move.endPiece &&
-        pieceMap.find(move.start) != pieceMap.end() && pieceMap.find(move.end) != pieceMap.end()) {
+        pieceMap.contains(move.start) && pieceMap.contains(move.end)) {
         if (move.type == MoveType::enPassant) {
             int dir = move.startPiece->color == PieceColor::white ? -1 : +1;
             std::string capturedPawnPos = {move.end[0], static_cast<char>(move.end[1] + dir)};
@@ -195,7 +194,7 @@ bool Board::makeMove(Move move, std::vector<std::unique_ptr<Piece>> &capturedPie
     if (move.startPiece == pieceMap.at(move.start).get() &&
         (move.endPiece == pieceMap.at(move.end).get() || move.type == MoveType::enPassant) &&
         move.startPiece != nullptr && move.startPiece != move.endPiece &&
-        pieceMap.find(move.start) != pieceMap.end() && pieceMap.find(move.end) != pieceMap.end()) {
+        pieceMap.contains(move.start) && pieceMap.contains(move.end)) {
         if (move.type == MoveType::enPassant) {
             int dir = move.startPiece->color == PieceColor::white ? -1 : +1;
             std::string capturedPawnPos = {move.end[0], static_cast<char>(move.end[1] + dir)};
